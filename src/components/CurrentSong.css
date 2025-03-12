@@ -1,0 +1,27 @@
+.current-song {
+  height: 100%;
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
+  min-height: 650px;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 32px;
+  width: 100%;
+  justify-content: center;
+}
+
+.song-description {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  margin-top: 32px;
+  width: 100%;
+}
+
+#widget2 {
+  width: 100%;
+}

@@ -1,0 +1,17 @@
+.custom-button {
+  background-color: #66BB6A;
+  color: #ffffff;
+  border-width: 0px;
+  border-radius: 10px;
+  height: 40px;
+  padding-left: 16px;
+  padding-right: 16px;
+  min-width: 85px;
+  font-family: 'Space Grotesk Light';
+  font-weight: bolder;
+  letter-spacing: 0.5px;
+}
+
+.custom-button:hover {
+  background-color: #2E7D32;
+}
