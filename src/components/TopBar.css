@@ -1,0 +1,17 @@
+.menu-container {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 90px;
+  border-radius: 15px;
+  background-color: white;
+}
