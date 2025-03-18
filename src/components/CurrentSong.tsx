@@ -29,6 +29,7 @@ const CurrentSong = () => {
   const currentSong = usePlaylistStore((state) => state.currentSong);
   const playNext = usePlaylistStore((state) => state.playNext);
   const playPrev = usePlaylistStore((state) => state.playPrev);
+  const shufflePlayList = usePlaylistStore((state) => state.shufflePlayList);
 
   useEffect(() => {
     // Solo define onYouTubeIframeAPIReady una vez
@@ -90,6 +91,10 @@ const CurrentSong = () => {
     playPrev()
   }
 
+  function handleShuffle() {
+    shufflePlayList()
+  }
+
   const [songData, setSongData] = useState({ duration: 0 })
 
   function updateInfo(event: YT.PlayerEvent) {
@@ -120,7 +125,7 @@ const CurrentSong = () => {
       {/* 📌 El reproductor de YouTube se monta en este `div` */}
       <div className="video-container" ref={playerRef} />
       <div className="controls">
-        <CustomButton onClick={() => {  }} disabled>{ isSmallScreen ? <img className="control-icon" src={Shuffle} alt='list_music' width={30} /> : 'Aleatorio' }</CustomButton>
+        <CustomButton onClick={() => { handleShuffle() }} >{ isSmallScreen ? <img className="control-icon" src={Shuffle} alt='list_music' width={30} /> : 'Aleatorio' }</CustomButton>
         <CustomButton onClick={() => { handlePrevSong() }} >{ isSmallScreen ? <img className="control-icon" src={SkipPrevious} alt='list_music' width={30} /> : 'Anterior' }</CustomButton>
         <CustomButton onClick={() => { if(isPaused === undefined){ playerInstance.current?.playVideo() }else if (!isPaused) { playerInstance.current?.pauseVideo()} else {playerInstance.current?.playVideo()} }} >
           {isSmallScreen ? (isFistTime === 'Detener' ? <img className="control-icon" src={Pause} alt='list_music' width={30} /> : <img className="control-icon" src={Play} alt='list_music' width={30} />) : isFistTime}
