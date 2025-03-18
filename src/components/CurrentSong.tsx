@@ -2,6 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import "./CurrentSong.css";
 import CustomButton from "./CustomButton";
 import usePlaylistStore from "../store/playlistStore";
+import Shuffle from "../assets/shuffle.svg";
+import Repeat from "../assets/repeat.svg";
+import RepeatOne from "../assets/repeat_one_on.svg";
+import Play from "../assets/play_arrow.svg";
+import Pause from "../assets/pause.svg";
+import SkipNext from "../assets/skip_next.svg";
+import SkipPrevious from "../assets/skip_previous.svg";
 
 /*interface ICurrentSongProps {
 }*/
@@ -98,16 +105,29 @@ const CurrentSong = () => {
     return `${min}:${strSec}`
   }
 
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsSmallScreen(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const isFistTime = isPaused === undefined ? 'Iniciar' : isPaused ? 'Continuar' : 'Detener'
+
   return (
     <div className="card current-song">
       {/* 📌 El reproductor de YouTube se monta en este `div` */}
       <div className="video-container" ref={playerRef} />
       <div className="controls">
-        <CustomButton onClick={() => {  }} disabled>Aleatorio</CustomButton>
-        <CustomButton onClick={() => { handlePrevSong() }} >Anterior</CustomButton>
-        <CustomButton onClick={() => { if(isPaused === undefined){ playerInstance.current?.playVideo() }else if (!isPaused) { playerInstance.current?.pauseVideo()} else {playerInstance.current?.playVideo()} }} >{isPaused === undefined ? 'Iniciar' : isPaused ? 'Continuar' : 'Detener'}</CustomButton>
-        <CustomButton onClick={() => { handleNextSong() }} >Siguiente</CustomButton>
-        <CustomButton onClick={() => {  }} disabled>Repetir</CustomButton>
+        <CustomButton onClick={() => {  }} disabled>{ isSmallScreen ? <img className="control-icon" src={Shuffle} alt='list_music' width={30} /> : 'Aleatorio' }</CustomButton>
+        <CustomButton onClick={() => { handlePrevSong() }} >{ isSmallScreen ? <img className="control-icon" src={SkipPrevious} alt='list_music' width={30} /> : 'Anterior' }</CustomButton>
+        <CustomButton onClick={() => { if(isPaused === undefined){ playerInstance.current?.playVideo() }else if (!isPaused) { playerInstance.current?.pauseVideo()} else {playerInstance.current?.playVideo()} }} >
+          {isSmallScreen ? (isFistTime === 'Detener' ? <img className="control-icon" src={Pause} alt='list_music' width={30} /> : <img className="control-icon" src={Play} alt='list_music' width={30} />) : isFistTime}
+        </CustomButton>
+        <CustomButton onClick={() => { handleNextSong() }} >{ isSmallScreen ? <img className="control-icon" src={SkipNext} alt='list_music' width={30} /> : 'Siguiente' }</CustomButton>
+        <CustomButton onClick={() => {  }} disabled>{ isSmallScreen ? <img className="control-icon" src={Repeat} alt='list_music' width={30} /> : 'Repetir' }</CustomButton>
+        
       </div>
       <div className="song-description">
         <span style={{ color: "#66bb6a" }}>Reproduciondo ahora</span>

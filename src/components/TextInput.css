@@ -15,3 +15,9 @@
 .input-container {
   
 }
+
+@media (max-width: 767px) {
+  .text-input {
+    width: 70%
+  }
+}

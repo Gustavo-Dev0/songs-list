@@ -8,15 +8,6 @@
   padding-right: 60px
 }
 
-@media (max-width: 600px) {
-  #root {
-    width: 100%;
-    padding-left: 4px;
-    padding-right: 4px;
-  }
-}
-
-
 .main-container {
   display: flex;
   flex-direction: row;
@@ -26,7 +17,13 @@
   min-height: 600px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 767px) {
+  #root {
+    width: 100%;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
   .main-container {
     flex-direction: column;
   }

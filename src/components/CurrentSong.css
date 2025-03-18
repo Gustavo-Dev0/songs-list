@@ -26,3 +26,19 @@
 #widget2 {
   width: 100%;
 }
+
+@media (max-width: 767px) {
+
+  .controls {
+    gap: 4px
+  }
+
+  #widget2 {
+    max-height: 220px
+  }
+
+  .control-icon {
+    filter: invert(1);
+  }
+
+}
