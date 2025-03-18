@@ -19,6 +19,15 @@ interface IPlaylistStore {
   fetchSongs: () => Promise<void>;
 }
 
+if(crypto.randomUUID === undefined) crypto.randomUUID = () => {
+  /*
+  Type '() => string' is not assignable to type '() => `${string}-${string}-${string}-${string}-${string}`'.
+  Type 'string' is not assignable to type '`${string}-${string}-${string}-${string}-${string}`'
+  */
+ //i need to fix this whitout crypto
+  return `${Date.now()}-${Math.random()}-${Math.random()}-${Math.random()}-${Math.random()}`
+};
+
 const exampleSongs: Song[] = [
   { id: crypto.randomUUID(), videoId: "V3R06qkyiUo" },
   { id: crypto.randomUUID(), videoId: "idFGrL2EH8c" },
@@ -39,7 +48,7 @@ const exampleYT = {
   thumbnail_url: 'https://example.com/thumbnail.jpg',
 };
 
-const usePlaylistStore = create<IPlaylistStore>((set) => ({
+const usePlaylistStore = create<IPlaylistStore>((set, get) => ({
   currentSong: null,
   playList: [],
   setCurrentSong: (song) => set({ currentSong: song }),
@@ -90,6 +99,11 @@ const usePlaylistStore = create<IPlaylistStore>((set) => ({
           s.id === song.id ? { ...s, details: data } : s
         ),
       }));
+
+      if (get().currentSong === null && song.id === get().playList[0].id) {
+        set({ currentSong: { ...song, details: data } });
+      }
+
     } catch (error) {
       console.error(`Error al cargar detalles de la canción ${song.videoId}:`, error);
       set((state) => ({
@@ -102,7 +116,8 @@ const usePlaylistStore = create<IPlaylistStore>((set) => ({
   fetchSongs: async () => {
     try {
       const response = { data: exampleSongs };
-      set({ playList: response.data, currentSong: response.data[0] });
+      //await get().fetchSongDetails(response.data[0]);
+      set({ playList: response.data, /*currentSong: response.data[0]*/ });
 
     } catch (error) {
       console.error("Error al cargar canciones:", error);
