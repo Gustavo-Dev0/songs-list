@@ -19,12 +19,12 @@ interface IPlaylistStore {
   fetchSongs: () => Promise<void>;
 }
 
-if(crypto.randomUUID === undefined) crypto.randomUUID = () => {
+if (crypto.randomUUID === undefined) crypto.randomUUID = () => {
   /*
   Type '() => string' is not assignable to type '() => `${string}-${string}-${string}-${string}-${string}`'.
   Type 'string' is not assignable to type '`${string}-${string}-${string}-${string}-${string}`'
   */
- //i need to fix this whitout crypto
+  //i need to fix this whitout crypto
   return `${Date.now()}-${Math.random()}-${Math.random()}-${Math.random()}-${Math.random()}`
 };
 
@@ -48,82 +48,94 @@ const exampleYT = {
   thumbnail_url: 'https://example.com/thumbnail.jpg',
 };
 
-const usePlaylistStore = create<IPlaylistStore>((set, get) => ({
-  currentSong: null,
-  playList: [],
-  setCurrentSong: (song) => set({ currentSong: song }),
+const usePlaylistStore = create<IPlaylistStore>((set, get) => {
 
-  addToPlayList: (song) => set((state) => ({ playList: [...state.playList, song] })),
+  const store: IPlaylistStore = {
+    currentSong: null,
+    playList: [],
+    setCurrentSong: (song) => set({ currentSong: song }),
 
-  removeFromPlayList: (song: Song) =>
-    set((state) => ({ playList: state.playList.filter((s) => s.id !== song.id) })),
+    addToPlayList: (song) => set((state) => ({ playList: [...state.playList, song] })),
 
-  playNext: () =>
-    set((state) => {
-      const currentSongIndex = state.playList.findIndex(
-        (song) => song.id === state.currentSong?.id
-      )
-      if (currentSongIndex === -1) {
-        return { currentSong: state.playList[0] }
+    removeFromPlayList: (song: Song) =>
+      set((state) => ({ playList: state.playList.filter((s) => s.id !== song.id) })),
+
+    playNext: () =>
+      set((state) => {
+        const currentSongIndex = state.playList.findIndex(
+          (song) => song.id === state.currentSong?.id
+        )
+        if (currentSongIndex === -1) {
+          return { currentSong: state.playList[0] }
+        }
+
+        const nextSongIndex = (currentSongIndex + 1) % state.playList.length
+        const nextSong = state.playList[nextSongIndex]
+        return { currentSong: nextSong };
+      }),
+    playPrev: () => {
+      set((state) => {
+        const currentSongIndex = state.playList.findIndex(
+          (song) => song.id === state.currentSong?.id
+        )
+        if (currentSongIndex === -1) {
+          return { currentSong: state.playList[0] }
+        }
+
+        const prevSongIndex = (currentSongIndex - 1 + state.playList.length) % state.playList.length
+        const prevSong = state.playList[prevSongIndex]
+        return { currentSong: prevSong };
+      })
+    },
+    fetchSongDetails: async (song: Song) => {
+      try {
+
+        const response = await fetch(
+          `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${song.videoId}&format=json`
+        );
+        const data: YouTubeOEmbed = await response.json();
+
+        // Actualizar solo la canción específica
+        set((state) => ({
+          playList: state.playList.map((s) =>
+            s.id === song.id ? { ...s, details: data } : s
+          ),
+        }));
+
+        if (get().currentSong === null && song.id === get().playList[0].id) {
+          set({ currentSong: { ...song, details: data } });
+        }
+
+      } catch (error) {
+        console.error(`Error al cargar detalles de la canción ${song.videoId}:`, error);
+        set((state) => ({
+          playList: state.playList.map((s) =>
+            s.id === song.id ? { ...s, details: structuredClone(exampleYT) } : s
+          ),
+        }));
       }
+    },
+    fetchSongs: async () => {
+      try {
+        const savedPlayList = JSON.parse(localStorage.getItem("playList") || "[]");
+        if (savedPlayList.length === 0) {
+          savedPlayList.push(...exampleSongs)
+        }
+        const response = { data: savedPlayList };
 
-      const nextSongIndex = (currentSongIndex + 1) % state.playList.length
-      const nextSong = state.playList[nextSongIndex]
-      return { currentSong: nextSong };
-    }),
-  playPrev: () => {
-    set((state) => {
-      const currentSongIndex = state.playList.findIndex(
-        (song) => song.id === state.currentSong?.id
-      )
-      if (currentSongIndex === -1) {
-        return { currentSong: state.playList[0] }
+        set({ playList: response.data, currentSong: response.data[0] });
+
+      } catch (error) {
+        console.error("Error al cargar canciones:", error);
       }
+    },
+  }
 
-      const prevSongIndex = (currentSongIndex - 1 + state.playList.length) % state.playList.length
-      const prevSong = state.playList[prevSongIndex]
-      return { currentSong: prevSong };
-    })
-  },
-  fetchSongDetails: async (song: Song) => {
-    try {
+  return store
+});
 
-      const response = await fetch(
-        `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${song.videoId}&format=json`
-      );
-      const data: YouTubeOEmbed = await response.json();
-
-      // Actualizar solo la canción específica
-      set((state) => ({
-        playList: state.playList.map((s) =>
-          s.id === song.id ? { ...s, details: data } : s
-        ),
-      }));
-
-      if (get().currentSong === null && song.id === get().playList[0].id) {
-        set({ currentSong: { ...song, details: data } });
-      }
-
-    } catch (error) {
-      console.error(`Error al cargar detalles de la canción ${song.videoId}:`, error);
-      set((state) => ({
-        playList: state.playList.map((s) =>
-          s.id === song.id ? { ...s, details: structuredClone(exampleYT) } : s
-        ),
-      }));
-    }
-  },
-  fetchSongs: async () => {
-    try {
-      const response = { data: exampleSongs };
-      //await get().fetchSongDetails(response.data[0]);
-      set({ playList: response.data, /*currentSong: response.data[0]*/ });
-
-    } catch (error) {
-      console.error("Error al cargar canciones:", error);
-    }
-  },
-
-}));
+usePlaylistStore.subscribe((state) => {
+  localStorage.setItem("playList", JSON.stringify(state.playList));
+});
 
 export default usePlaylistStore;
