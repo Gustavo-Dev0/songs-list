@@ -1,51 +1,43 @@
-import { useEffect, useState } from "react"
-import { YouTubeOEmbed } from "../types"
 import "./SongItem.css"
 import QueueMusic from"./../assets/queue_music.svg"
 import Remove from"./../assets/close.svg"
-import { getSongs, removeSong } from "../data/songsDB"
+import usePlaylistStore, { Song } from "../store/playlistStore"
+import { useEffect } from "react"
 
 interface ISongProps {
-  songId: string
-  setCurrentSongId: (songId: string) => void
-  isCurrentSong: boolean
-  setSongs: (songs: string[]) => void
+  song: Song
 }
 
-const SongItem = ({ songId, setCurrentSongId, isCurrentSong, setSongs }: ISongProps) => {
+const SongItem = ({ song }: ISongProps) => {
 
-  const [song, setSong] = useState<YouTubeOEmbed | undefined>(undefined)
+  const currentSongId = usePlaylistStore((state) => state.currentSong?.videoId)
+  const setCurrentSong = usePlaylistStore((state) => state.setCurrentSong)
+  const removeFromPlayList = usePlaylistStore((state) => state.removeFromPlayList)
+  const fetchSongDetails = usePlaylistStore((state) => state.fetchSongDetails)
 
   useEffect(() => {
-    async function fetchVideoInfo(videoId: string) {
-      try {
-        const response = await fetch(
-          `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`
-        );
-        const data = await response.json();
-        setSong(data);
-      } catch (error) {
-        console.error("Error obteniendo los datos:", error);
-      }
-    }
-    fetchVideoInfo(songId)
+    if(!song.details) fetchSongDetails(song)
   }, [])
 
-  const handleClick = () => {
-      setCurrentSongId(songId)
+  const isCurrentSong = currentSongId === song.videoId
+
+  const handleSetCurrentSong = () => {
+      setCurrentSong(song)
   }
 
-  //console.log(songId === songId)
+  const handleRemoveSong = () => {
+    removeFromPlayList(song)
+  }
 
   return (
     <>
       {song ?
-        <div className="song-item" onClick={handleClick} style={isCurrentSong ? { backgroundColor: "#A5D6A7" } : {}}>
+        <div className="song-item" onClick={handleSetCurrentSong} style={isCurrentSong ? { backgroundColor: "#A5D6A7" } : {}}>
           <img src={QueueMusic} alt='list_music' width={25} />
-          <img src={song.thumbnail_url} alt={song.title} width={50} />
-          <span className="song-title">{song.title}</span>
+          <img src={song.details?.thumbnail_url} alt={song.details?.title} width={50} />
+          <span className="song-title">{song.details?.title}</span>
           
-          {!isCurrentSong && <img className="remove-button" src={Remove} alt={song.title} width={25} onClick={(event)=>{removeSong(songId);setSongs(getSongs());event.preventDefault();event.stopPropagation()}}/>}
+          {!isCurrentSong && <img className="remove-button" src={Remove} alt='remove' width={25} onClick={(event)=>{event.preventDefault();event.stopPropagation();handleRemoveSong()}}/>}
         </div>
         : <div></div>}
     </>

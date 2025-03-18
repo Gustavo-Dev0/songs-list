@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import "./CurrentSong.css";
-import { getNextSong, getPrevSong } from "../data/songsDB";
 import CustomButton from "./CustomButton";
-import { YouTubeOEmbed } from "../types";
+import usePlaylistStore from "../store/playlistStore";
 
-interface ICurrentSongProps {
-  currentSongId: string;
-  setCurrentSongId: (songId: string) => void;
-}
+/*interface ICurrentSongProps {
+}*/
 
 declare global {
   interface Window {
@@ -16,11 +13,15 @@ declare global {
   }
 }
 
-const CurrentSong = ({ currentSongId, setCurrentSongId }: ICurrentSongProps) => {
+const CurrentSong = () => {
   const playerRef = useRef<HTMLDivElement | null>(null);
   const playerInstance = useRef<YT.Player | null>(null);
   const [ytReady, setYtReady] = useState(false);
   const [isPaused, setIsPaused] = useState<boolean | undefined>(undefined);
+
+  const currentSong = usePlaylistStore((state) => state.currentSong);
+  const playNext = usePlaylistStore((state) => state.playNext);
+  const playPrev = usePlaylistStore((state) => state.playPrev);
 
   useEffect(() => {
     // Solo define onYouTubeIframeAPIReady una vez
@@ -42,14 +43,12 @@ const CurrentSong = ({ currentSongId, setCurrentSongId }: ICurrentSongProps) => 
     }
   }, []);
 
-
-
   useEffect(() => {
     if (ytReady && playerRef.current && window.YT) {
       if (!playerInstance.current) {
         // 📌 Crea el reproductor solo una vez
         playerInstance.current = new window.YT.Player(playerRef.current, {
-          videoId: currentSongId,
+          videoId: currentSong?.videoId,
           playerVars: { autoplay: 1 },
           events: {
             onStateChange: (event: YT.OnStateChangeEvent) => {
@@ -71,23 +70,17 @@ const CurrentSong = ({ currentSongId, setCurrentSongId }: ICurrentSongProps) => 
         });
       } else {
         // 📌 Cambia el video sin crear un nuevo reproductor
-        playerInstance.current.loadVideoById(currentSongId);
+        playerInstance.current.loadVideoById(currentSong!.videoId);
       }
     }
-  }, [ytReady, currentSongId]);
+  }, [ytReady, currentSong]);
 
   function handleNextSong() {
-    const url = URL.parse(playerInstance.current!.getVideoUrl());
-    const next = getNextSong(url?.searchParams.get('v') || '');
-    //console.log(JSON.stringify(next), JSON.stringify(url?.searchParams.get('v') || ''))
-    setCurrentSongId(next);
+    playNext()
   }
 
   function handlePrevSong() {
-    const url = URL.parse(playerInstance.current!.getVideoUrl());
-    const next = getPrevSong(url?.searchParams.get('v') || '');
-    //console.log(JSON.stringify(next), JSON.stringify(url?.searchParams.get('v') || ''))
-    setCurrentSongId(next);
+    playPrev()
   }
 
   const [songData, setSongData] = useState({ duration: 0 })
@@ -97,23 +90,6 @@ const CurrentSong = ({ currentSongId, setCurrentSongId }: ICurrentSongProps) => 
       duration: event.target.getDuration()
     })
   }
-
-  const [currentSongExtraInfo, setCurrentSongExtraInfo] = useState<YouTubeOEmbed | undefined>(undefined)
-
-  useEffect(() => {
-    async function fetchVideoInfo(videoId: string) {
-      try {
-        const response = await fetch(
-          `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`
-        );
-        const data = await response.json();
-        setCurrentSongExtraInfo(data);
-      } catch (error) {
-        console.error("Error obteniendo los datos:", error);
-      }
-    }
-    if (currentSongId) fetchVideoInfo(currentSongId)
-  }, [currentSongId])
 
   const toMinSec = (seconds: number) => {
     const min = Math.floor(seconds / 60)
@@ -135,8 +111,8 @@ const CurrentSong = ({ currentSongId, setCurrentSongId }: ICurrentSongProps) => 
       </div>
       <div className="song-description">
         <span style={{ color: "#66bb6a" }}>Reproduciondo ahora</span>
-        <h3 style={{ color: "#66bb6a" }}>{currentSongExtraInfo?.title}</h3>
-        <span style={{ color: "#6B7280" }}>{currentSongExtraInfo?.author_name} - {toMinSec(songData.duration)}</span>
+        <h3 style={{ color: "#66bb6a" }}>{currentSong?.details?.title}</h3>
+        <span style={{ color: "#6B7280" }}>{currentSong?.details?.author_name} - {toMinSec(songData.duration)}</span>
         {/* <p style={{ color: "#000000" }}>industry. Lorem Ipsum has been the industry's
           standard dummy text ever since the 1500s, when an unknown printer took a galle
           y of type and scrambled it to make a type specimen book. It has survived not o
