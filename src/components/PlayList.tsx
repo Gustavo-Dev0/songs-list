@@ -1,19 +1,29 @@
 import SongItem from "./SongItem"
 import "./PlayList.css"
+import usePlaylistStore from "../store/playlistStore"
+import { useEffect } from "react"
 
-interface PlayListProps {
-  songs: string[]
-  setCurrentSongId: (songId: string) => void
-  currentSongId: string
-  setSongs: (songs: string[]) => void
+/*interface PlayListProps {
 }
+*/
 
-const PlayList = ({ songs, setCurrentSongId, currentSongId, setSongs }: PlayListProps) => {
+const PlayList = () => {
+
+  const playList = usePlaylistStore((state) => state.playList)
+  const fetchSongs = usePlaylistStore((state) => state.fetchSongs)
+
+  useEffect(() => {
+    if(playList.length === 0)
+      fetchSongs()
+  }, [])
+
+  console.log(playList)
+
   return (
     <div className="songs-container">
       {
-        songs.map((song) => {
-          return <SongItem key={song} songId={song} setCurrentSongId={setCurrentSongId} isCurrentSong={currentSongId === song} setSongs={setSongs}></SongItem>
+        playList.map((song) => {
+          return <SongItem key={song.id} song={song} ></SongItem>
         })
       }
     </div>

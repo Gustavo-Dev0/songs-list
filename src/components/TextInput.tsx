@@ -1,13 +1,15 @@
 import { useState } from "react"
 import "./TextInput.css"
-import { addSong, getSongs } from "../data/songsDB"
 import CustomButton from "./CustomButton"
+import usePlaylistStore from "../store/playlistStore"
 
-interface ITextInputProps {
-  setSongs: (songs: string[]) => void
-}
+/*interface ITextInputProps {
+}*/
 
-const TextInput = ({ setSongs }: ITextInputProps) => {
+const TextInput = () => {
+
+  const addToPlayList = usePlaylistStore((state) => state.addToPlayList)
+
   const [link, setLink] = useState<string>('')
 
   const handleLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,12 +23,10 @@ const TextInput = ({ setSongs }: ITextInputProps) => {
     const linkParsed = URL.parse(link)
     const idVideo = linkParsed?.searchParams.get('v')
     if(idVideo === undefined){
-      console.log('Errorororroor')
       setError("Link inválido")
       return
     }
-    addSong(idVideo!)
-    setSongs(getSongs())
+    addToPlayList({id: crypto.randomUUID(), videoId: idVideo!})
     setLink('')
     setError(undefined)
   }
