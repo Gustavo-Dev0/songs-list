@@ -17,8 +17,6 @@ const PlayList = () => {
       fetchSongs()
   }, [])
 
-  console.log(playList)
-
   return (
     <div className="songs-container">
       {

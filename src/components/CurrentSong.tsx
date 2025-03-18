@@ -44,7 +44,7 @@ const CurrentSong = () => {
   }, []);
 
   useEffect(() => {
-    if (ytReady && playerRef.current && window.YT) {
+    if (ytReady && playerRef.current && window.YT && currentSong) {
       if (!playerInstance.current) {
         // 📌 Crea el reproductor solo una vez
         playerInstance.current = new window.YT.Player(playerRef.current, {

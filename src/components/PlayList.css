@@ -1,6 +1,6 @@
 .songs-container {
   background-color: #f2fbfa/*#3A3A3A;*/;
-  min-height: 650px;
+  height: 100%;
   padding: 16px;
   border-radius: 15px;
 }
