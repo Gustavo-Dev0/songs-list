@@ -28,6 +28,12 @@ function App() {
           <PlayList />
         </div>
       </div>
+      <footer>
+        <p>© 2024 GustavoDev0. Todos los derechos reservados.
+          Para consultas, contáctanos en: <a className='email-link' href="mailto:gustavohuarcathea@gmail.com">gustavohuarcathea@gmail.com</a>.
+          Gracias por visitar mi playlist favorita.
+          Desarrollado con <strong>[React]</strong>.</p>
+      </footer>
     </>
   )
 }

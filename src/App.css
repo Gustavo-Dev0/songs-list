@@ -8,7 +8,15 @@
   padding-left: 64px;
   padding-right: 60px;
   overflow-x: hidden;
-  overflow-y: hidden;
+  /*overflow-y: hidden;*/
+
+}
+
+@media (min-width: 768px) {
+  #root {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .main-container {
@@ -49,6 +57,40 @@
   gap: 10px;
 }
 
+@media screen and (min-width: 1921px) {
+  .current-song-container {
+    flex: 3;
+
+  }
+
+  .playlist-container {
+    flex: 1.5;
+  }
+}
+
+/* Estilos para resoluciones cercanas a 2K (ejemplo: 2304px) */
+@media screen and (min-width: 2049px) {
+  .current-song-container {
+    flex: 3;
+
+  }
+
+  .playlist-container {
+    flex: 1.2;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+  .current-song-container {
+    flex: 3;
+
+  }
+
+  .playlist-container {
+    flex: 1;
+  }
+}
+
 .playlist-title {
   color: #2E7D32;
   display: flex;
@@ -64,4 +106,20 @@
   top: 0;
   width: 100%;
   z-index: 100;
+}
+
+footer {
+  margin-top: auto;
+  align-self: center;
+}
+
+.email-link {
+  text-decoration: none;
+  color: #2E7D32;
+}
+
+@media (max-width: 767px) {
+  footer {
+    font-size: 8px;
+  }
 }

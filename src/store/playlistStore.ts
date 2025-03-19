@@ -152,7 +152,6 @@ const usePlaylistStore = create<IPlaylistStore>((set, get) => {
         }
 
         const newPlayList = arrayMove(get().playList, index1, index2);
-        //console.log("exceute");
 
         return { playList: newPlayList };
       });
@@ -163,7 +162,6 @@ const usePlaylistStore = create<IPlaylistStore>((set, get) => {
 });
 
 usePlaylistStore.subscribe((state) => {
-  console.log("exceute");
   localStorage.setItem("playList", JSON.stringify(state.playList));
 });
 
