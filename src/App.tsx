@@ -13,16 +13,6 @@ declare global {
 
 function App() {
 
-  /*useEffect(() => {
-    const songsSaved = getSongs()
-    setSongs(songsSaved)
-    if (songsSaved.length > 0 && currentSongId === '') {
-      setCurrentSongId(() => songsSaved[0] + '')
-    }
-  }, [])*/
-
-  //return <iframe ref={(el) => (playerRef.current = el as HTMLIFrameElement)} />;
-
   return (
     <>
       <div className='topbar-container'>

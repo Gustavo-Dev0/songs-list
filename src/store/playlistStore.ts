@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { YouTubeOEmbed } from "../types";
+import { arrayMove } from "@dnd-kit/sortable";
 
 export type Song = {
   id: string;
@@ -17,7 +18,8 @@ interface IPlaylistStore {
   playPrev: () => void;
   fetchSongDetails: (song: Song) => Promise<void>;
   fetchSongs: () => Promise<void>;
-  shufflePlayList: () => void
+  shufflePlayList: () => void;
+  swapSongs: (id1: Song['id'], id2: Song['id']) => void;
 }
 
 if (crypto.randomUUID === undefined) crypto.randomUUID = () => {
@@ -29,7 +31,7 @@ if (crypto.randomUUID === undefined) crypto.randomUUID = () => {
   return `${Date.now()}-${Math.random()}-${Math.random()}-${Math.random()}-${Math.random()}`
 };
 
-const exampleSongs: Song[] = [
+export const exampleSongs: Song[] = [
   { id: crypto.randomUUID(), videoId: "V3R06qkyiUo" },
   { id: crypto.randomUUID(), videoId: "idFGrL2EH8c" },
   { id: crypto.randomUUID(), videoId: "_ulh3hkEMUQ" },
@@ -140,12 +142,28 @@ const usePlaylistStore = create<IPlaylistStore>((set, get) => {
         return { playList: shuffled };
       });
     },
+    swapSongs: (id1, id2) => {
+      set((state) => {
+        const index1 = state.playList.findIndex((song) => song.id === id1);
+        const index2 = state.playList.findIndex((song) => song.id === id2);
+
+        if (index1 === -1 || index2 === -1) {
+          return state; // No hacer nada si los IDs no se encuentran
+        }
+
+        const newPlayList = arrayMove(get().playList, index1, index2);
+        //console.log("exceute");
+
+        return { playList: newPlayList };
+      });
+    },
   }
 
   return store
 });
 
 usePlaylistStore.subscribe((state) => {
+  console.log("exceute");
   localStorage.setItem("playList", JSON.stringify(state.playList));
 });
 
