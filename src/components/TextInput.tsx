@@ -22,7 +22,8 @@ const TextInput = () => {
     if(link && link === '') return
     const linkParsed = URL.parse(link)
     const idVideo = linkParsed?.searchParams.get('v')
-    if(idVideo === undefined){
+    console.log(idVideo)
+    if(!idVideo){
       setError("Link inválido")
       return
     }
