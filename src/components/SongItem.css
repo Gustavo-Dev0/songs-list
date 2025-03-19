@@ -10,6 +10,7 @@
   /*border-bottom: 1px solid #66BB6A;*/
   position: relative;
   cursor: pointer;
+  background-color: #f2fbfa;
 }
 
 .song-item::after {
@@ -28,7 +29,8 @@
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
-    overflow: hidden;
+  overflow: hidden;
+  user-select: none
 }
 
 .remove-button {

@@ -4,7 +4,7 @@ import CustomButton from "./CustomButton";
 import usePlaylistStore from "../store/playlistStore";
 import Shuffle from "../assets/shuffle.svg";
 import Repeat from "../assets/repeat.svg";
-import RepeatOne from "../assets/repeat_one_on.svg";
+//import RepeatOne from "../assets/repeat_one_on.svg";
 import Play from "../assets/play_arrow.svg";
 import Pause from "../assets/pause.svg";
 import SkipNext from "../assets/skip_next.svg";
@@ -121,7 +121,7 @@ const CurrentSong = () => {
   const isFistTime = isPaused === undefined ? 'Iniciar' : isPaused ? 'Continuar' : 'Detener'
 
   return (
-    <div className="card current-song">
+    <div className="current-song">
       {/* 📌 El reproductor de YouTube se monta en este `div` */}
       <div className="video-container" ref={playerRef} />
       <div className="controls">
