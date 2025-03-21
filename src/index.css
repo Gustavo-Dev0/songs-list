@@ -4,25 +4,25 @@
 }
 
 @font-face {
-  font-family: 'Space Grotesk'; /* O el nombre que prefieras */
-  src: url('/src/assets/fonts/SpaceGrotesk.ttf') format('truetype'); /* Ajusta el nombre del archivo */
-  font-weight: normal; /* O el peso correspondiente */
+  font-family: 'Space Grotesk';
+  src: url('/src/assets/fonts/SpaceGrotesk.ttf') format('truetype');
+  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Space Grotesk Light'; /* O el nombre que prefieras */
-  src: url('/src/assets/fonts/SpaceGrotesk-Light.ttf') format('truetype'); /* Ajusta el nombre del archivo */
-  font-weight: normal; /* O el peso correspondiente */
+  font-family: 'Space Grotesk Light';
+  src: url('/src/assets/fonts/SpaceGrotesk-Light.ttf') format('truetype');
+  font-weight: normal; 
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Space Grotesk Bold'; /* O el nombre que prefieras */
-  src: url('/src/assets/fonts/SpaceGrotesk.ttf') format('truetype'); /* Ajusta el nombre del archivo */
-  font-weight: normal; /* O el peso correspondiente */
+  font-family: 'Space Grotesk Bold';
+  src: url('/src/assets/fonts/SpaceGrotesk.ttf') format('truetype');
+  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
@@ -30,10 +30,8 @@
 body {
   margin: 0;
   display: flex;
-  /* place-items: center; */
   font-family: 'Space Grotesk Light';
   font-weight: '100';
   padding: 0;
   height: 100vh;
-  /*overflow-y: hidden;*/
 }
