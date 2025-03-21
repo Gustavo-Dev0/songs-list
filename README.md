@@ -36,11 +36,11 @@ Este proyecto es un reproductor de música basado en YouTube, desarrollado con R
 ## ⚡ Instalación y Uso
 1. Clona este repositorio:
    ```sh
-   git clone https://github.com/tu-usuario/tu-repositorio.git
+   git clone https://github.com/Gustavo-Dev0/songs-list.git
    ```
 2. Navega al directorio del proyecto:
    ```sh
-   cd tu-repositorio
+   cd songs-list
    ```
 3. Instala las dependencias:
    ```sh
