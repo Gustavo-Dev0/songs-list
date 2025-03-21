@@ -1,54 +1,65 @@
-# React + TypeScript + Vite
+# 🎵 YouTube Music Player
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto es un reproductor de música basado en YouTube, desarrollado con React y TypeScript. Permite la reproducción de videos de YouTube, navegación por una lista de reproducción y control de reproducción adaptable a pantallas pequeñas.
 
-Currently, two official plugins are available:
+## 🚀 Características
+- 📺 Reproducción de videos de YouTube mediante la API de YouTube.
+- 🔁 Controles de reproducción: reproducir, pausar, anterior, siguiente, aleatorio y repetición.
+- 📱 Diseño responsivo con adaptaciones para pantallas pequeñas.
+- 🎵 Manejo de estado con Zustand para la lista de reproducción.
+- 💾 Guarda la lista de reproducción en el Local Storage.
+- ➕ Permite agregar canciones manualmente.
+- 🎯 Usa drag and drop con DnD Kit para reordenar canciones.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Tecnologías Utilizadas
+- React 18 + TypeScript
+- Zustand (manejo de estado)
+- DnD Kit (drag and drop)
+- API de YouTube
+- CSS para estilos personalizados
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 📂 Estructura del Proyecto
+```
+📦 src
+ ┣ 📂 assets          # Íconos y recursos gráficos
+ ┣ 📂 components      # Componentes principales
+ ┃ ┣ 📜 CurrentSong.tsx  # Componente del reproductor actual
+ ┃ ┗ 📜 CustomButton.tsx # Botón personalizado
+ ┣ 📂 hooks           # Hooks personalizados
+ ┃ ┗ 📜 useIsSmallScreen.ts  # Hook para detectar pantallas pequeñas
+ ┃ ┗ 📜 useYouTubePlayer.ts  # Hook para incrustar el video de YouTube
+ ┣ 📂 store           # Almacenamiento global con Zustand
+ ┃ ┗ 📜 playlistStore.ts  # Estado de la lista de reproducción
+ ┗ 📜 App.tsx         # Componente principal
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ⚡ Instalación y Uso
+1. Clona este repositorio:
+   ```sh
+   git clone https://github.com/tu-usuario/tu-repositorio.git
+   ```
+2. Navega al directorio del proyecto:
+   ```sh
+   cd tu-repositorio
+   ```
+3. Instala las dependencias:
+   ```sh
+   npm install
+   ```
+4. Inicia el proyecto en modo desarrollo:
+   ```sh
+   npm run dev
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🌐 Demo
+Puedes probar la aplicación en el siguiente enlace:
+[YouLife - Demo](https://youlife.pages.dev)
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## 🏗️ Futuras Mejoras
+- 🔍 Búsqueda de canciones dentro de la lista de reproducción.
+- 🎨 Mejoras en la UI/UX.
+- 🛑 Manejo de errores más robusto para la API de YouTube.
+
+## 📄 Licencia
+Este proyecto está bajo la licencia MIT.
+
