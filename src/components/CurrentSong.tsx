@@ -35,6 +35,8 @@ const CurrentSong = () => {
   const playPrev = usePlaylistStore((state) => state.playPrev);
   const shufflePlayList = usePlaylistStore((state) => state.shufflePlayList);
 
+  const isSmallScreen = useIsSmallScreen();
+
   const [songData, setSongData] = useState({ duration: 0 })
 
   function updateInfo(event: YT.PlayerEvent) {
@@ -69,8 +71,6 @@ const CurrentSong = () => {
   };
 
   const playerInstance = useYouTubePlayer({ playerRef, videoId: currentSong?.videoId || "", onEnd: handleOnEnd, onPlay: handleOnPlay, onPause: () => setIsPaused(true) });
-
-  const isSmallScreen = useIsSmallScreen();
 
   const isFirstTime = isPaused === undefined ? 'Iniciar' : isPaused ? 'Continuar' : 'Detener'
 
