@@ -30,6 +30,10 @@
   overflow-y: hidden;
 }
 
+.topbar-container {
+  margin-top: 16px;
+}
+
 @media (max-width: 767px) {
   #root {
     width: 100%;
@@ -40,6 +44,11 @@
   .main-container {
     flex-direction: column;
   }
+
+  .topbar-container {
+    margin-top: 4px;
+  }
+
 }
 
 .current-song-container {

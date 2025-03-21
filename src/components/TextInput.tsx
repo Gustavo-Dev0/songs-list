@@ -1,6 +1,6 @@
 import { useState } from "react"
 import "./TextInput.css"
-import CustomButton from "./CustomButton"
+import CustomButton from "./iu/CustomButton"
 import usePlaylistStore from "../store/playlistStore"
 
 /*interface ITextInputProps {

@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import "./CurrentSong.css";
-import CustomButton from "./CustomButton";
+import CustomButton from "./iu/CustomButton";
 import usePlaylistStore from "../store/playlistStore";
-import Shuffle from "../assets/shuffle.svg";
-import Repeat from "../assets/repeat.svg";
-import RepeatOne from "../assets/repeat_one.svg";
-import Play from "../assets/play_arrow.svg";
-import Pause from "../assets/pause.svg";
-import SkipNext from "../assets/skip_next.svg";
-import SkipPrevious from "../assets/skip_previous.svg";
+import Shuffle from "../assets/icons/shuffle.svg";
+import Repeat from "../assets/icons/repeat.svg";
+import RepeatOne from "../assets/icons/repeat_one.svg";
+import Play from "../assets/icons/play_arrow.svg";
+import Pause from "../assets/icons/pause.svg";
+import SkipNext from "../assets/icons/skip_next.svg";
+import SkipPrevious from "../assets/icons/skip_previous.svg";
 
 /*interface ICurrentSongProps {
 }*/
