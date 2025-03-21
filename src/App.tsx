@@ -2,7 +2,7 @@ import './App.css'
 import PlayList from './components/PlayList'
 import CurrentSong from './components/CurrentSong'
 import TextInput from './components/TextInput'
-import TopBar from './components/TopBar'
+import TopBar from './components/layout/TopBar'
 
 declare global {
   interface Window {

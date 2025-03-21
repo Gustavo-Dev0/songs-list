@@ -1,4 +1,4 @@
-.custom-button {
+.custom-btn {
   background-color: #66BB6A;
   color: #ffffff;
   border-width: 0px;
@@ -12,12 +12,16 @@
   letter-spacing: 0.5px;
 }
 
-.custom-button:hover {
+.custom-btn:hover {
   background-color: #2E7D32;
 }
 
+.pressed-btn {
+  background-color: #4A9C4E
+}
+
 @media (max-width: 767px) {
-  .custom-button {
+  .custom-btn {
     padding-left: 8px;
     padding-right: 8px;
     min-width: 50px;
@@ -25,5 +29,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .custom-btn:hover {
+    background-color: #66BB6A;
+  }
+
+  button.custom-btn.pressed-btn {
+    background-color: #4A9C4E;
   }
 }

@@ -1,7 +1,7 @@
 import "./TopBar.css"
-import AccountCircle from"./../assets/account_circle.svg"
-import Logo from"./../assets/songs-list-logo.webp"
-import CustomButton from "./CustomButton"
+import AccountCircle from"./../../assets/icons/account_circle.svg"
+import Logo from"./../../assets/songs-list-logo.webp"
+import CustomButton from "./../iu/CustomButton"
 
 const TopBar = () => {
   return (

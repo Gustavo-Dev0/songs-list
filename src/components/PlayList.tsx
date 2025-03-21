@@ -4,6 +4,7 @@ import usePlaylistStore from "../store/playlistStore"
 import { useEffect, useState } from "react"
 import { DndContext, DragEndEvent, PointerSensor, useSensor } from "@dnd-kit/core"
 import { SortableContext } from "@dnd-kit/sortable"
+import { useIsSmallScreen } from "../hooks/useIsSmallScreen"
 
 /*interface PlayListProps {
 }
@@ -17,6 +18,7 @@ const PlayList = () => {
 
   const [isDragging, setIsDragging] = useState(false)
 
+  const isSmallScreen = useIsSmallScreen()
 
   useEffect(() => {
     if (playList.length === 0)
@@ -38,14 +40,6 @@ const PlayList = () => {
       distance: 3
     }
   });
-
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
-
-  useEffect(() => {
-    const handleResize = () => setIsSmallScreen(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   return (
     <div className="songs-container" style={{ overflowY: isDragging ? 'hidden' : 'auto' }}>

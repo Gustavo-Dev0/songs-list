@@ -1,7 +1,7 @@
 import "./SongItem.css"
-import QueueMusic from "./../assets/queue_music.svg"
-import Drag from "./../assets/drag.svg"
-import Remove from "./../assets/close.svg"
+import QueueMusic from "./../assets/icons/queue_music.svg"
+import Drag from "./../assets/icons/drag.svg"
+import Remove from "./../assets/icons/close.svg"
 import usePlaylistStore, { Song } from "../store/playlistStore"
 import { useEffect } from "react"
 import { useSortable } from "@dnd-kit/sortable"
@@ -20,7 +20,7 @@ const SongItem = ({ song, isSmallScreen }: ISongProps) => {
   const fetchSongDetails = usePlaylistStore((state) => state.fetchSongDetails)
 
   useEffect(() => {
-    if (!song.details) fetchSongDetails(song)
+    fetchSongDetails(song)
   }, [])
 
   const isCurrentSong = currentSongId === song.videoId
