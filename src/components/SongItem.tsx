@@ -20,7 +20,7 @@ const SongItem = ({ song, isSmallScreen }: ISongProps) => {
   const fetchSongDetails = usePlaylistStore((state) => state.fetchSongDetails)
 
   useEffect(() => {
-    if (!song.details) fetchSongDetails(song)
+    fetchSongDetails(song)
   }, [])
 
   const isCurrentSong = currentSongId === song.videoId

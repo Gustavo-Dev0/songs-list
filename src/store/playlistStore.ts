@@ -91,6 +91,14 @@ const usePlaylistStore = create<IPlaylistStore>((set, get) => {
       })
     },
     fetchSongDetails: async (song: Song) => {
+
+      if (song.details) {
+        if (get().currentSong === null && song.id === get().playList[0].id) {
+          set({ currentSong: { ...song } });
+        }
+        return
+      }
+
       try {
 
         const response = await fetch(
@@ -126,7 +134,7 @@ const usePlaylistStore = create<IPlaylistStore>((set, get) => {
         }
         const response = { data: savedPlayList };
 
-        set({ playList: response.data, currentSong: response.data[0] });
+        set({ playList: response.data, /*currentSong: response.data[0]*/ });
 
       } catch (error) {
         console.error("Error al cargar canciones:", error);

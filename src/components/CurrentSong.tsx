@@ -4,7 +4,7 @@ import CustomButton from "./CustomButton";
 import usePlaylistStore from "../store/playlistStore";
 import Shuffle from "../assets/shuffle.svg";
 import Repeat from "../assets/repeat.svg";
-//import RepeatOne from "../assets/repeat_one_on.svg";
+import RepeatOne from "../assets/repeat_one.svg";
 import Play from "../assets/play_arrow.svg";
 import Pause from "../assets/pause.svg";
 import SkipNext from "../assets/skip_next.svg";
@@ -25,6 +25,8 @@ const CurrentSong = () => {
   const playerInstance = useRef<YT.Player | null>(null);
   const [ytReady, setYtReady] = useState(false);
   const [isPaused, setIsPaused] = useState<boolean | undefined>(undefined);
+  const isLoopingRef = useRef<boolean>(false);
+  const [isLooping, setIsLooping] = useState(isLoopingRef.current);
 
   const currentSong = usePlaylistStore((state) => state.currentSong);
   const playNext = usePlaylistStore((state) => state.playNext);
@@ -61,8 +63,13 @@ const CurrentSong = () => {
           events: {
             onStateChange: (event: YT.OnStateChangeEvent) => {
               if (event.data === window.YT!.PlayerState.ENDED) {
-                console.log("🎬 El video terminó.");
-                handleNextSong();
+                if (isLoopingRef.current && playerInstance.current) {
+                  playerInstance.current.seekTo(0, false);
+                  playerInstance.current.playVideo();
+                } else {
+                  handleNextSong();
+                }
+
               }
 
               if (event.data === window.YT!.PlayerState.PLAYING) {
@@ -76,10 +83,13 @@ const CurrentSong = () => {
             }
           },
         });
+        console.log("metodos de currentSong", playerInstance.current);
+        //playerInstance.current.setLoop(isLooping);
       } else {
         // 📌 Cambia el video sin crear un nuevo reproductor
         playerInstance.current.loadVideoById(currentSong!.videoId);
       }
+
     }
   }, [ytReady, currentSong]);
 
@@ -94,6 +104,12 @@ const CurrentSong = () => {
   function handleShuffle() {
     shufflePlayList()
   }
+
+  function handleLooping() {
+    isLoopingRef.current = !isLoopingRef.current;
+    setIsLooping(isLoopingRef.current);
+  }
+
 
   const [songData, setSongData] = useState({ duration: 0 })
 
@@ -125,14 +141,22 @@ const CurrentSong = () => {
       {/* 📌 El reproductor de YouTube se monta en este `div` */}
       <div className="video-container" ref={playerRef} />
       <div className="controls">
-        <CustomButton onClick={() => { handleShuffle() }} >{ isSmallScreen ? <img className="control-icon" src={Shuffle} alt='list_music' width={30} /> : 'Aleatorio' }</CustomButton>
-        <CustomButton onClick={() => { handlePrevSong() }} >{ isSmallScreen ? <img className="control-icon" src={SkipPrevious} alt='list_music' width={30} /> : 'Anterior' }</CustomButton>
-        <CustomButton onClick={() => { if(isPaused === undefined){ playerInstance.current?.playVideo() }else if (!isPaused) { playerInstance.current?.pauseVideo()} else {playerInstance.current?.playVideo()} }} >
+        <CustomButton onClick={() => { handleShuffle() }} >
+          {isSmallScreen ? <img className="control-icon" src={Shuffle} alt='list_music' width={30} /> : 'Aleatorio'}
+        </CustomButton>
+        <CustomButton onClick={() => { handlePrevSong() }} >
+          {isSmallScreen ? <img className="control-icon" src={SkipPrevious} alt='list_music' width={30} /> : 'Anterior'}
+        </CustomButton>
+        <CustomButton onClick={() => { if (isPaused === undefined) { playerInstance.current?.playVideo() } else if (!isPaused) { playerInstance.current?.pauseVideo() } else { playerInstance.current?.playVideo() } }} >
           {isSmallScreen ? (isFistTime === 'Detener' ? <img className="control-icon" src={Pause} alt='list_music' width={30} /> : <img className="control-icon" src={Play} alt='list_music' width={30} />) : isFistTime}
         </CustomButton>
-        <CustomButton onClick={() => { handleNextSong() }} >{ isSmallScreen ? <img className="control-icon" src={SkipNext} alt='list_music' width={30} /> : 'Siguiente' }</CustomButton>
-        <CustomButton onClick={() => {  }} disabled>{ isSmallScreen ? <img className="control-icon" src={Repeat} alt='list_music' width={30} /> : 'Repetir' }</CustomButton>
-        
+        <CustomButton onClick={() => { handleNextSong() }} >
+          {isSmallScreen ? <img className="control-icon" src={SkipNext} alt='list_music' width={30} /> : 'Siguiente'}
+        </CustomButton>
+        <CustomButton onClick={() => { handleLooping() }} pressed={isLooping} >
+          {isSmallScreen ? <img className="control-icon" src={isLooping ? RepeatOne : Repeat} alt='list_music' width={30} /> : ( isLooping ? 'En Bucle' : 'Repetir')}
+        </CustomButton>
+
       </div>
       <div className="song-description">
         <span style={{ color: "#66bb6a" }}>Reproduciondo ahora</span>
